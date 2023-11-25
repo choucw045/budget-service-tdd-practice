@@ -87,6 +87,20 @@ public class Tests
         query.Should().Be(280 + 28 + 930 + 2);
     }
 
+    [Test]
+    public void should_be_able_to_handle_unrelated_budget()
+    {
+        GivenBudgets(
+            CreateBudget(2026, 5, 62),
+            CreateBudget(2026, 6, 600),
+            CreateBudget(2026, 7, 31)
+        );
+        var query = _budgetService.Query(
+            new DateTime(2023, 1, 4),
+            new DateTime(2023, 5, 1));
+        query.Should().Be(0);
+    }
+
 
     private void GivenBudgets(params Budget[] budget)
     {

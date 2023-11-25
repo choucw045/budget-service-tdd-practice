@@ -17,7 +17,9 @@ public class Budget
 
         var spanStart = inputStart > firstDateOfMonth ? inputStart : firstDateOfMonth;
         var spanEnd = inputEnd < lastDateOfMonth ? inputEnd : lastDateOfMonth;
-        return spanEnd.Day - spanStart.Day + 1;
+        if (spanEnd >= spanStart)
+            return spanEnd.Day - spanStart.Day + 1;
+        return 0;
     }
 
     private int DaysInMonth()
