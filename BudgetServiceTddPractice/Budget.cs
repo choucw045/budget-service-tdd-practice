@@ -24,4 +24,9 @@ public class Budget
     {
         return Convert.ToInt32(YearMonth.Substring(4, 2));
     }
+
+    public int GetEffectiveBudget(DateTime start, DateTime end)
+    {
+        return ValidDays(start, end) * Amount / DateTime.DaysInMonth(GetYear(), GetMonth());
+    }
 }
