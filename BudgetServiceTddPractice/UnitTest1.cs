@@ -39,6 +39,19 @@ public class Tests
             new DateTime(2023, 1, 1));
         query.Should().Be(10);
     }
+    [Test]
+    public void should_return_0_if_period_invalid()
+    {
+        _budgetRepo.GetAll().Returns(new List<Budget>
+        {
+            CreateBudget(2023, 1, 310)
+        });
+        var query = _budgetService.Query(
+            new DateTime(2023, 1, 4),
+            new DateTime(2023, 1, 1));
+        query.Should().Be(0);
+    }
+    
     
     private static Budget CreateBudget(int year, int month, int amount)
     {
