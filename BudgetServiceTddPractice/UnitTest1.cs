@@ -12,6 +12,7 @@ public class Tests
     public void Setup()
     {
         _budgetRepo = Substitute.For<IBudgetRepo>();
+        _budgetRepo.GetAll().Returns(new List<Budget>());
         _budgetService = new BudgetService(_budgetRepo);
     }
 
