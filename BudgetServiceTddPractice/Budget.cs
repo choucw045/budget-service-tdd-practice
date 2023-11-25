@@ -5,7 +5,12 @@ public class Budget
     public string YearMonth { get; set; } = null!;
     public int Amount { get; set; }
 
-    public int ValidDays(DateTime inputStart, DateTime inputEnd)
+    public int GetEffectiveBudget(DateTime start, DateTime end)
+    {
+        return ValidDays(start, end) * Amount / DaysInMonth();
+    }
+
+    private int ValidDays(DateTime inputStart, DateTime inputEnd)
     {
         var firstDateOfMonth = new DateTime(GetYear(), GetMonth(), 1);
         var lastDateOfMonth = firstDateOfMonth.AddMonths(1).AddDays(-1);
@@ -15,18 +20,18 @@ public class Budget
         return spanEnd.Day - spanStart.Day + 1;
     }
 
-    public int GetYear()
+    private int DaysInMonth()
+    {
+        return DateTime.DaysInMonth(GetYear(), GetMonth());
+    }
+
+    private int GetYear()
     {
         return Convert.ToInt32(YearMonth.Substring(0, 4));
     }
 
-    public int GetMonth()
+    private int GetMonth()
     {
         return Convert.ToInt32(YearMonth.Substring(4, 2));
-    }
-
-    public int GetEffectiveBudget(DateTime start, DateTime end)
-    {
-        return ValidDays(start, end) * Amount / DateTime.DaysInMonth(GetYear(), GetMonth());
     }
 }

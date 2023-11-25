@@ -72,6 +72,21 @@ public class Tests
         query.Should().Be(0);
     }
 
+    [Test]
+    public void should_be_able_to_handle_cross_multiple_month()
+    {
+        GivenBudgets(
+            CreateBudget(2023, 1, 310),
+            CreateBudget(2023, 2, 28),
+            CreateBudget(2023, 3, 930),
+            CreateBudget(2023, 5, 62)
+        );
+        var query = _budgetService.Query(
+            new DateTime(2023, 1, 4),
+            new DateTime(2023, 5, 1));
+        query.Should().Be(280 + 28 + 930 + 2);
+    }
+
 
     private void GivenBudgets(params Budget[] budget)
     {
