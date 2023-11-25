@@ -5,8 +5,8 @@ namespace BudgetServiceTddPractice;
 
 public class Tests
 {
-    private BudgetService _budgetService;
-    private IBudgetRepo _budgetRepo;
+    private BudgetService _budgetService = null!;
+    private IBudgetRepo _budgetRepo = null!;
 
     [SetUp]
     public void Setup()
@@ -20,42 +20,32 @@ public class Tests
     {
         _budgetRepo.GetAll().Returns(new List<Budget>
         {
-            new()
-            {
-                YearMonth = "202301",
-                Amount = 310
-            }
+            CreateBudget(2023, 1, 310)
         });
         var query = _budgetService.Query(
             new DateTime(2023, 1, 1),
             new DateTime(2023, 1, 31));
         query.Should().Be(310);
     }
-}
-
-public class BudgetService
-{
-    private readonly IBudgetRepo _budgetRepo;
-
-    public BudgetService(IBudgetRepo budgetRepo)
+    [Test]
+    public void should_be_able_to_calculate_one_day()
     {
-        _budgetRepo = budgetRepo;
+        _budgetRepo.GetAll().Returns(new List<Budget>
+        {
+            CreateBudget(2023, 1, 310)
+        });
+        var query = _budgetService.Query(
+            new DateTime(2023, 1, 1),
+            new DateTime(2023, 1, 1));
+        query.Should().Be(10);
     }
-
-    public decimal Query(DateTime start, DateTime end)
+    
+    private static Budget CreateBudget(int year, int month, int amount)
     {
-        var budgets = _budgetRepo.GetAll();
-        return budgets.Sum(x => x.Amount);
+        return new()
+        {
+            YearMonth = $"{year:0000}{month:00}",
+            Amount = amount
+        };
     }
-}
-
-public interface IBudgetRepo
-{
-    List<Budget> GetAll();
-}
-
-public class Budget
-{
-    public string YearMonth { get; set; }
-    public int Amount { get; set; }
 }
