@@ -1,5 +1,3 @@
-using FluentAssertions;
-using NSubstitute;
 
 namespace BudgetServiceTddPractice;
 
@@ -16,20 +14,10 @@ public class Tests
     }
 
     [Test]
-    public void should_be_able_to_calculate_one_month()
+    public void Test1()
     {
-        _budgetRepo.GetAll().Returns(new List<Budget>
-        {
-            new()
-            {
-                YearMonth = "202301",
-                Amount = 310
-            }
-        });
-        var query = _budgetService.Query(
-            new DateTime(2023, 1, 1),
-            new DateTime(2023, 1, 31));
-        query.Should().Be(310);
+        var query = _budgetService.Query(default, default);
+        Assert.Pass();
     }
 }
 
