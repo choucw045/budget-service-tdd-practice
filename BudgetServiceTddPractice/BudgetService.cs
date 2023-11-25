@@ -12,6 +12,6 @@ public class BudgetService
     public decimal Query(DateTime start, DateTime end)
     {
         var budgets = _budgetRepo.GetAll();
-        return budgets.Sum(x => x.Amount);
+        return budgets.Sum(x => x.ValidDays(start, end) * x.Amount / DateTime.DaysInMonth(x.GetYear(), x.GetMonth()));
     }
 }
