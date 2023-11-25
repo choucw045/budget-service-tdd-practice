@@ -18,10 +18,9 @@ public class Tests
     [Test]
     public void should_be_able_to_calculate_one_month()
     {
-        _budgetRepo.GetAll().Returns(new List<Budget>
-        {
+        GivenBudgets(
             CreateBudget(2023, 1, 310)
-        });
+        );
         var query = _budgetService.Query(
             new DateTime(2023, 1, 1),
             new DateTime(2023, 1, 31));
@@ -31,10 +30,7 @@ public class Tests
     [Test]
     public void should_be_able_to_calculate_one_day()
     {
-        _budgetRepo.GetAll().Returns(new List<Budget>
-        {
-            CreateBudget(2023, 1, 310)
-        });
+        GivenBudgets(CreateBudget(2023, 1, 310));
         var query = _budgetService.Query(
             new DateTime(2023, 1, 1),
             new DateTime(2023, 1, 1));
@@ -44,29 +40,33 @@ public class Tests
     [Test]
     public void should_return_0_if_period_invalid()
     {
-        _budgetRepo.GetAll().Returns(new List<Budget>
-        {
+        GivenBudgets(
             CreateBudget(2023, 1, 310)
-        });
+        );
         var query = _budgetService.Query(
             new DateTime(2023, 1, 4),
             new DateTime(2023, 1, 1));
         query.Should().Be(0);
     }
+
     [Test]
     public void should_be_able_to_handle_cross_month()
     {
-        _budgetRepo.GetAll().Returns(new List<Budget>
-        {
+        GivenBudgets(
             CreateBudget(2023, 1, 310),
             CreateBudget(2023, 2, 28)
-        });
+        );
         var query = _budgetService.Query(
             new DateTime(2023, 1, 4),
             new DateTime(2023, 2, 1));
-        query.Should().Be(280+1);
+        query.Should().Be(280 + 1);
     }
 
+
+    private void GivenBudgets(params Budget[] budget)
+    {
+        _budgetRepo.GetAll().Returns(budget.ToList());
+    }
 
     private static Budget CreateBudget(int year, int month, int amount)
     {
