@@ -62,6 +62,15 @@ public class Tests
         query.Should().Be(280 + 1);
     }
 
+    [Test]
+    public void should_be_able_to_handle_cross_month_with_empty_budget()
+    {
+        var query = _budgetService.Query(
+            new DateTime(2023, 1, 4),
+            new DateTime(2023, 2, 1));
+        query.Should().Be(0);
+    }
+
 
     private void GivenBudgets(params Budget[] budget)
     {
